@@ -30,7 +30,7 @@ class CartItem
     public function decreaseQuantity($amount =1)
     {
         if ($this->getQuantity() - $amount < 1){
-            throw new Exception("Product quantity can not be more than 1");
+            throw new Exception("Product quantity can not be less than 1");
 
             //TODO $quantity must be increased by one.
         // Bonus: $quantity must not become more than whatever is Product::$availableQuantity

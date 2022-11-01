@@ -43,6 +43,7 @@ class Product
      */
     public function removeFromCart(Cart $cart)
     {
+        return $cart->removeProduct($this);
         //TODO Implement method
     }
 

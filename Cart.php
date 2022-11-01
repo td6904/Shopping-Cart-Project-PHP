@@ -23,24 +23,19 @@ class Cart
      */
     public function addProduct(Product $product, int $quantity)
     {
-        $cartItem = $this->findCardItem($product->getId());
+        $cartItem = $this->findCartItem($product->getId());
         if ($cartItem === null){
         $cartItem = new CartItem($product, 0);
-        $this->items[] = $cartItem;
+        $this->items[$product->getId()] = $cartItem;
     }
-    
         $cartItem->increaseQuantity($quantity);
         return $cartItem;
     }
 
-    private function findCardItem(int $productId){
+    private function findCartItem(int $productId){
         
-        foreach ($this->items as $item){
-            if ($item->getProduct()->getId() === $productId){
-                return $item->getProduct()    ;
-            }
-        }
-        return null;
+        return $this->items[$productId] ?? null;
+        
     }
 
     /**
@@ -50,8 +45,11 @@ class Cart
      */
     public function removeProduct(Product $product)
     {
+        unset($this->items[$product->getId()]);
+    
+        }
+        
         //TODO Implement method
-    }
 
     /**
      * This returns total number of products added in cart
@@ -75,6 +73,36 @@ class Cart
      */
     public function getTotalSum(): float
     {
+        $totalSum = 0;
+        foreach ($this->items as $item){
+            $totalSum += $item->getQuantity() * $item->getProduct()->getPrice();
+        }
+        return $totalSum;
+
         //TODO Implement method
+    }
+
+    /**
+     * Get the value of items
+     *
+     * @return  CartItem[]
+     */ 
+    public function getItems()
+    {
+        return $this->items;
+    }
+
+    /**
+     * Set the value of items
+     *
+     * @param  CartItem[]  $items
+     *
+     * @return  self
+     */ 
+    public function setItems($items)
+    {
+        $this->items = $items;
+
+        return $this;
     }
 }
